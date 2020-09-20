@@ -1,3 +1,6 @@
+# Ignore tsc output
+build/
+
 # Logs
 logs
 *.log
