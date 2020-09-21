@@ -1,11 +1,19 @@
 export interface Config {
-  libraries: Library[];
+  // uuid4 -> Library
+  libraries: Record<string, Library>;
 }
 
 export interface Library {
   id: string;
   name: string;
   path: string;
+}
+
+export interface LibraryConfig {
+  id: string;
+  name: string;
+  albums: Album[];
+  media: Media[];
 }
 
 export interface Album {
