@@ -1,12 +1,12 @@
-import { configModel, librariesModel } from "../models";
+import { configModel, libraryModel } from "../models";
 import { Library } from "../types";
 
 export const getLibraries = async () => {
   const paths = Object.values(configModel.getConfig().libraries);
-  return paths.map(librariesModel.getLibraryAtPath);
+  return paths.map(libraryModel.getLibraryAtPath);
 };
 
 export const createLibrary = async (id: string, name: string, path: string) => {
-  librariesModel.initializeLibrary(id, name, path);
+  libraryModel.initializeLibrary(id, name, path);
   configModel.addLibrary(id, path);
 };

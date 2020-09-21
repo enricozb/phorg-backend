@@ -1,5 +1,5 @@
-import { LibrariesModel } from "./libraries";
+import { LibraryModel } from "./libraries";
 import { ConfigModel } from "./config";
 
-export const librariesModel = new LibrariesModel();
+export const libraryModel = new LibraryModel();
 export const configModel = new ConfigModel();
