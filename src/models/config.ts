@@ -1,7 +1,7 @@
 import fs from "fs";
 import * as path from "path";
 
-import { Config, Library } from "../types";
+import { Config } from "../types";
 
 const configDir =
   process.env.XDG_HOME_CONFIG || path.join(process.env.HOME!, ".config");
@@ -26,8 +26,6 @@ export class ConfigModel {
     };
   }
 
-
-
   writeConfig(config: Config) {
     fs.writeFile(
       phorgConfigPath,
@@ -40,9 +38,9 @@ export class ConfigModel {
     return JSON.parse(fs.readFileSync(phorgConfigPath, "utf8"));
   }
 
-  addLibrary(library: Library) {
+  addLibrary(id: string, path: string) {
     const phorgConfig = this.getConfig();
-    phorgConfig.libraries[library.id] = library;
+    phorgConfig.libraries[id] = path;
     this.writeConfig(phorgConfig);
   }
 }

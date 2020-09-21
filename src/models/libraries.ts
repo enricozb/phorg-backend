@@ -1,10 +1,12 @@
 import fs from "fs";
 import * as path from "path";
 
-import { Library, LibraryConfig } from "../types";
+import { Library } from "../types";
 
 export class LibrariesModel {
-  emptyConfig(id: string, name: string): LibraryConfig {
+  static configName = "phorg-lib.json";
+
+  emptyConfig(id: string, name: string): Library {
     return {
       id,
       name,
@@ -13,15 +15,19 @@ export class LibrariesModel {
     };
   }
 
-  initializeLibrary(library: Library) {
-    fs.mkdirSync(path.join(library.path, "media"));
-    fs.mkdirSync(path.join(library.path, "thumb"));
+  initializeLibrary(id: string, name: string, lib_path: string) {
+    fs.mkdirSync(path.join(lib_path, "media"));
+    fs.mkdirSync(path.join(lib_path, "thumb"));
 
-    fs.writeFile(
-      path.join(library.path, "phorg-lib.json"),
-      JSON.stringify(this.emptyConfig(library.id, library.name), null, 2) +
-        "\n",
-      () => {}
+    fs.writeFileSync(
+      path.join(lib_path, LibrariesModel.configName),
+      JSON.stringify(this.emptyConfig(id, name), null, 2) + "\n"
+    );
+  }
+
+  getLibraryAtPath(lib_path: string): Library {
+    return JSON.parse(
+      fs.readFileSync(path.join(lib_path, LibrariesModel.configName), "utf8")
     );
   }
 }

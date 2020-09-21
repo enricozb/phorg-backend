@@ -1,15 +1,9 @@
 export interface Config {
-  // uuid4 -> Library
-  libraries: Record<string, Library>;
+  // uuid4 -> library path
+  libraries: Record<string, string>;
 }
 
 export interface Library {
-  id: string;
-  name: string;
-  path: string;
-}
-
-export interface LibraryConfig {
   id: string;
   name: string;
   albums: Album[];

@@ -9,5 +9,6 @@ librariesRoute.get("/", async (req, res) => {
 });
 
 librariesRoute.post("/", async (req, res) => {
-  res.send(await librariesService.createLibrary(req.body.library)).status(200);
+  const {id, name, path} = req.body.library;
+  res.send(await librariesService.createLibrary(id, name, path)).status(200);
 });
