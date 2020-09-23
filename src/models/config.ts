@@ -4,7 +4,7 @@ import * as path from "path";
 import { Config } from "../types";
 
 const configDir =
-  process.env.XDG_HOME_CONFIG || path.join(process.env.HOME!, ".config");
+  process.env.XDG_CONFIG_HOME || path.join(process.env.HOME!, ".config");
 const phorgConfigDir = path.join(configDir, "phorg");
 const phorgConfigPath = path.join(phorgConfigDir, "config.json");
 
