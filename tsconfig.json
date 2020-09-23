@@ -11,7 +11,10 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
 
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "lib": [
+      "esnext"
+    ]
   },
   "include": [
     "src/**/*"
