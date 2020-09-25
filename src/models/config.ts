@@ -5,7 +5,7 @@ import { Config } from "../types";
 
 const configDir =
   process.env.XDG_CONFIG_HOME || path.join(process.env.HOME!, ".config");
-const phorgConfigDir = path.join(configDir, "phorg");
+export const phorgConfigDir = path.join(configDir, "phorg");
 const phorgConfigPath = path.join(phorgConfigDir, "config.json");
 
 export class ConfigModel {

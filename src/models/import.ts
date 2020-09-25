@@ -2,10 +2,12 @@ import fs from "fs";
 import * as path from "path";
 
 import { ImportStatus } from "../types";
+import { phorgConfigDir } from "./config";
 
 const validFormats = [".png", ".jpg", ".mov", ".mp4"];
 const isDir = (p: string) => fs.lstatSync(p).isDirectory();
-const isMedia = (p: string) => validFormats.includes(path.extname(p).toLowerCase());
+const isMedia = (p: string) =>
+  validFormats.includes(path.extname(p).toLowerCase());
 
 // return list of files after walking over `dir`
 const walk = (dir: string) => {
@@ -23,17 +25,10 @@ const walk = (dir: string) => {
 };
 
 export class ImportModel {
-  constructor() {
-    this._status = {
-      ongoing: false,
-      precentage: 0,
-      message: "",
-      errors: [],
-    };
-  }
-
   status() {
-    return this._status;
+    return JSON.parse(
+      fs.readFileSync(path.join(phorgConfigDir, "import_status.json"), "utf8")
+    ) as ImportStatus;
   }
 
   importMedia(pathsAndDirs: string[]) {
@@ -55,6 +50,4 @@ export class ImportModel {
     }
     return paths.filter(isMedia);
   }
-
-  private _status: ImportStatus;
 }
