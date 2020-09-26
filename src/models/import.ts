@@ -4,7 +4,6 @@ import fs from "fs";
 import tmp from "tmp";
 
 import { configModel } from "./";
-import { ImportStatus } from "../types";
 import { phorgConfigDir } from "./config";
 
 const validFormats = [".png", ".jpg", ".mov", ".mp4"];
@@ -28,12 +27,6 @@ const walk = (dir: string) => {
 };
 
 export class ImportModel {
-  status() {
-    return JSON.parse(
-      fs.readFileSync(path.join(phorgConfigDir, "import_status.json"), "utf8")
-    ) as ImportStatus;
-  }
-
   importMedia(libraryId: string, pathsAndDirs: string[]) {
     const libraryPath = configModel.getLibraryPath(libraryId);
 

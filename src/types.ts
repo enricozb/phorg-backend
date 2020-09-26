@@ -18,10 +18,3 @@ export interface Album {
 export interface Media {
   id: string;
 }
-
-export interface ImportStatus {
-  ongoing: boolean;
-  precentage: number;
-  message: string;
-  errors: string[];
-}

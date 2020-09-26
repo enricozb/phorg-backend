@@ -12,7 +12,3 @@ importRoute.post("/", async (req, res) => {
   );
   res.status(200);
 });
-
-importRoute.get("/status", async (req, res) => {
-  res.send(await importService.status()).status(200);
-});

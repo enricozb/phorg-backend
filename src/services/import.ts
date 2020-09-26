@@ -5,7 +5,3 @@ export const importMedia = async (libraryId: string, paths: string[]) => {
   console.log("paths:", paths);
   await importModel.importMedia(libraryId, paths);
 };
-
-export const status = async () => {
-  return importModel.status();
-};
