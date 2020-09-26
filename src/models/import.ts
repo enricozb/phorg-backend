@@ -1,6 +1,9 @@
-import fs from "fs";
 import * as path from "path";
+import { spawn } from "child_process";
+import fs from "fs";
+import tmp from "tmp";
 
+import { configModel } from "./";
 import { ImportStatus } from "../types";
 import { phorgConfigDir } from "./config";
 
@@ -31,11 +34,23 @@ export class ImportModel {
     ) as ImportStatus;
   }
 
-  importMedia(pathsAndDirs: string[]) {
-    console.log("importing", pathsAndDirs);
+  importMedia(libraryId: string, pathsAndDirs: string[]) {
+    const libraryPath = configModel.getLibraryPath(libraryId);
 
     const paths = this.resolvePaths(pathsAndDirs);
-    console.log("found this many: ", paths.length);
+    const tmpfile = tmp.fileSync();
+    fs.writeFileSync(tmpfile.name, paths.join("\n") + "\n");
+
+    // call import
+    const importScript = path.join(phorgConfigDir, "utils/import.py");
+    const mediaDir = path.join(libraryPath, "media");
+    const proc = spawn("python", [importScript, tmpfile.name, mediaDir], {
+      detached: true,
+    });
+
+    proc.stdout.on("data", (data) => {
+      console.log("stdout:", data.toString());
+    });
   }
 
   private resolvePaths(pathsAndDirs: string[]) {

@@ -1,7 +1,9 @@
 import { importModel } from "../models";
 
-export const importMedia = async (paths: string[]) => {
-  await importModel.importMedia(paths);
+export const importMedia = async (libraryId: string, paths: string[]) => {
+  console.log("id:", libraryId);
+  console.log("paths:", paths);
+  await importModel.importMedia(libraryId, paths);
 };
 
 export const status = async () => {

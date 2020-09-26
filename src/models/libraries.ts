@@ -1,7 +1,7 @@
 import fs from "fs";
 import * as path from "path";
 
-import { Library } from "../types";
+import { Library, Media } from "../types";
 
 export class LibraryModel {
   static configName = "phorg-lib.json";
@@ -11,7 +11,7 @@ export class LibraryModel {
       id,
       name,
       albums: [],
-      media: [],
+      media: {},
     };
   }
 
@@ -29,5 +29,8 @@ export class LibraryModel {
     return JSON.parse(
       fs.readFileSync(path.join(lib_path, LibraryModel.configName), "utf8")
     );
+  }
+
+  addMedia(id: string, media: Record<string, Media>) {
   }
 }

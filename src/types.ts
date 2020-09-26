@@ -7,7 +7,7 @@ export interface Library {
   id: string;
   name: string;
   albums: Album[];
-  media: Media[];
+  media: Record<string, Media>;
 }
 
 export interface Album {

@@ -6,7 +6,10 @@ export const importRoute = Router();
 
 importRoute.post("/", async (req, res) => {
   // don't await b/c this is a long call
-  importService.importMedia(req.body.paths as string[]);
+  importService.importMedia(
+    req.body.libraryId as string,
+    req.body.paths as string[]
+  );
   res.status(200);
 });
 

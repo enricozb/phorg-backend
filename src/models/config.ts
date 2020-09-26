@@ -43,4 +43,9 @@ export class ConfigModel {
     phorgConfig.libraries[id] = path;
     this.writeConfig(phorgConfig);
   }
+
+  getLibraryPath(libraryId: string) {
+    const phorgConfig = this.getConfig();
+    return phorgConfig.libraries[libraryId];
+  }
 }
