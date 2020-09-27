@@ -1,7 +1,7 @@
 import fs from "fs";
 import * as path from "path";
 
-import { Library, Media } from "../types";
+import { Library, LibraryMedia } from "../types";
 
 export class LibraryModel {
   static configName = "phorg-lib.json";
@@ -11,26 +11,53 @@ export class LibraryModel {
       id,
       name,
       albums: [],
-      media: {},
+      media: {
+        items: {},
+        burst_id: {},
+        content_id: {},
+      },
     };
   }
 
-  initializeLibrary(id: string, name: string, lib_path: string) {
-    fs.mkdirSync(path.join(lib_path, "media"));
-    fs.mkdirSync(path.join(lib_path, "thumb"));
+  initializeLibrary(id: string, name: string, libraryPath: string) {
+    fs.mkdirSync(path.join(libraryPath, "media"));
+    fs.mkdirSync(path.join(libraryPath, "thumb"));
 
     fs.writeFileSync(
-      path.join(lib_path, LibraryModel.configName),
+      path.join(libraryPath, LibraryModel.configName),
       JSON.stringify(this.emptyConfig(id, name), null, 2) + "\n"
     );
   }
 
-  getLibraryAtPath(lib_path: string): Library {
+  getLibraryAtPath(libraryPath: string): Library {
     return JSON.parse(
-      fs.readFileSync(path.join(lib_path, LibraryModel.configName), "utf8")
+      fs.readFileSync(path.join(libraryPath, LibraryModel.configName), "utf8")
     );
   }
 
-  addMedia(id: string, media: Record<string, Media>) {
+  setLibraryAtPath(libraryPath: string, library: Library) {
+    fs.writeFileSync(
+      path.join(libraryPath, LibraryModel.configName),
+      JSON.stringify(library, null, 2) + "\n"
+    );
+  }
+
+  addMedia(libraryPath: string, importingMedia: LibraryMedia) {
+    const library = this.getLibraryAtPath(libraryPath);
+    console.log("before insertion", library);
+
+    library.media.items = { ...library.media.items, ...importingMedia.items };
+
+    for (const [burst_id, newGuids] of Object.entries(importingMedia.burst_id)) {
+      const existingGuids = library.media.burst_id[burst_id] || [];
+      library.media.burst_id[burst_id] = [...existingGuids, ...newGuids];
+    }
+
+    for (const [content_id, newGuids] of Object.entries(importingMedia.content_id)) {
+      const existingGuids = library.media.content_id[content_id] || [];
+      library.media.content_id[content_id] = [...existingGuids, ...newGuids];
+    }
+
+    this.setLibraryAtPath(libraryPath, library);
   }
 }

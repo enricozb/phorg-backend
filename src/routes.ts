@@ -2,8 +2,9 @@ import { Express, Router } from "express";
 import bodyParser from "body-parser";
 import logger from "morgan";
 
-import { librariesRoute } from "./routes/libraries";
 import { importRoute } from "./routes/import";
+import { librariesRoute } from "./routes/libraries";
+import { mediaRoute } from "./routes/media";
 
 export function setRoutes(app: Express) {
   const apiRoute = Router();
@@ -12,6 +13,7 @@ export function setRoutes(app: Express) {
   apiRoute.use(bodyParser.json());
   apiRoute.use(bodyParser.urlencoded({ extended: true }));
 
-  apiRoute.use("/libraries", librariesRoute);
   apiRoute.use("/import", importRoute);
+  apiRoute.use("/libraries", librariesRoute);
+  apiRoute.use("/media", mediaRoute);
 }

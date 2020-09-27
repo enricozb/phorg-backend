@@ -37,7 +37,7 @@ export class ImportModel {
     // call import
     const importScript = path.join(phorgConfigDir, "utils/import.py");
     const mediaDir = path.join(libraryPath, "media");
-    const proc = spawn("python", [importScript, tmpfile.name, mediaDir], {
+    const proc = spawn("python", [importScript, tmpfile.name, libraryPath, mediaDir], {
       detached: true,
     });
 
