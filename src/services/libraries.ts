@@ -2,7 +2,7 @@ import { configModel, libraryModel } from "../models";
 import { Library } from "../types";
 
 export const getLibraries = async () => {
-  const paths = Object.values(configModel.getConfig().libraries);
+  const paths = Object.values(configModel.config.libraries);
   return paths.map(libraryModel.getLibraryAtPath);
 };
 

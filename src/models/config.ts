@@ -9,15 +9,17 @@ export const phorgConfigDir = path.join(configDir, "phorg");
 const phorgConfigPath = path.join(phorgConfigDir, "config.json");
 
 export class ConfigModel {
-  initConfig() {
-    if (fs.existsSync(phorgConfigPath)) {
-      return;
+  config: Config;
+
+  constructor() {
+    if (!fs.existsSync(phorgConfigPath)) {
+      if (!fs.existsSync(phorgConfigDir)) {
+        fs.mkdirSync(phorgConfigDir, { recursive: true });
+      }
+      this.writeConfig(this.emptyConfig());
     }
 
-    if (!fs.existsSync(phorgConfigDir)) {
-      fs.mkdirSync(phorgConfigDir, { recursive: true });
-    }
-    this.writeConfig(this.emptyConfig());
+    this.config = JSON.parse(fs.readFileSync(phorgConfigPath, "utf8"));
   }
 
   emptyConfig(): Config {
@@ -34,18 +36,12 @@ export class ConfigModel {
     );
   }
 
-  getConfig(): Config {
-    return JSON.parse(fs.readFileSync(phorgConfigPath, "utf8"));
-  }
-
   addLibrary(id: string, path: string) {
-    const phorgConfig = this.getConfig();
-    phorgConfig.libraries[id] = path;
-    this.writeConfig(phorgConfig);
+    this.config.libraries[id] = path;
+    this.writeConfig(this.config);
   }
 
   getLibraryPath(libraryId: string) {
-    const phorgConfig = this.getConfig();
-    return phorgConfig.libraries[libraryId];
+    return this.config.libraries[libraryId];
   }
 }
