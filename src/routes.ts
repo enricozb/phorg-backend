@@ -5,6 +5,7 @@ import logger from "morgan";
 import { importRoute } from "./routes/import";
 import { librariesRoute } from "./routes/libraries";
 import { mediaRoute } from "./routes/media";
+import { thumbRoute } from "./routes/thumb";
 
 export function setRoutes(app: Express) {
   const apiRoute = Router();
@@ -16,4 +17,5 @@ export function setRoutes(app: Express) {
   apiRoute.use("/import", importRoute);
   apiRoute.use("/libraries", librariesRoute);
   apiRoute.use("/media", mediaRoute);
+  apiRoute.use("/thumb", thumbRoute);
 }
