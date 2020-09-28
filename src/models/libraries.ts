@@ -1,7 +1,7 @@
 import fs from "fs";
 import * as path from "path";
 
-import { Library, LibraryMedia } from "../types";
+import { guid, Library, LibraryMedia } from "../types";
 
 export class LibraryModel {
   static configName = "phorg-lib.json";
@@ -48,16 +48,24 @@ export class LibraryModel {
 
     library.media.items = { ...library.media.items, ...importingMedia.items };
 
-    for (const [burst_id, newGuids] of Object.entries(importingMedia.burst_id)) {
+    for (const [burst_id, newGuids] of Object.entries(
+      importingMedia.burst_id
+    )) {
       const existingGuids = library.media.burst_id[burst_id] || [];
       library.media.burst_id[burst_id] = [...existingGuids, ...newGuids];
     }
 
-    for (const [content_id, newGuids] of Object.entries(importingMedia.content_id)) {
+    for (const [content_id, newGuids] of Object.entries(
+      importingMedia.content_id
+    )) {
       const existingGuids = library.media.content_id[content_id] || [];
       library.media.content_id[content_id] = [...existingGuids, ...newGuids];
     }
 
     this.setLibraryAtPath(libraryPath, library);
+  }
+
+  getThumbnailPath(libraryPath: string, mediaId: guid) {
+    return path.join(libraryPath, "thumb", `${mediaId}.jpg`);
   }
 }
