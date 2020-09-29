@@ -1,12 +1,21 @@
 import { configModel, libraryModel } from "../models";
-import { Library } from "../types";
+import { guid, Library, LibraryPreview } from "../types";
 
-export const getLibraries = async () => {
+export const getLibraryPreviews = async (): Promise<LibraryPreview[]> => {
   const paths = Object.values(configModel.config.libraries);
-  return paths.map(libraryModel.getLibraryAtPath);
+  return paths.map(
+    (libraryId): LibraryPreview => {
+      const { id, name } = libraryModel.getLibraryAtPath(libraryId);
+      return { id, name };
+    }
+  );
 };
 
-export const createLibrary = async (id: string, name: string, path: string) => {
+export const getLibraryFromId = async (libraryId: guid): Promise<Library> => {
+  return libraryModel.getLibraryAtPath(configModel.getLibraryPath(libraryId));
+};
+
+export const createLibrary = async (id: guid, name: string, path: string) => {
   libraryModel.initializeLibrary(id, name, path);
   configModel.addLibrary(id, path);
 };

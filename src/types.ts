@@ -20,6 +20,8 @@ export interface Library {
   media: LibraryMedia;
 }
 
+export type LibraryPreview = Pick<Library, "id" | "name">;
+
 export interface Album {
   id: string;
   name: string;
