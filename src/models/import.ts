@@ -2,9 +2,11 @@ import * as path from "path";
 import { spawn } from "child_process";
 import fs from "fs";
 import tmp from "tmp";
+import { v4 as uuidv4 } from "uuid";
 
 import { configModel } from "./";
 import { phorgConfigDir } from "./config";
+import { Socket } from "../types";
 
 const validFormats = [".png", ".jpg", ".mov", ".mp4"];
 const isDir = (p: string) => fs.lstatSync(p).isDirectory();
@@ -27,6 +29,8 @@ const walk = (dir: string) => {
 };
 
 export class ImportModel {
+  sockfile = "/tmp/phorg_import.sock";
+
   importMedia(libraryId: string, pathsAndDirs: string[]) {
     const libraryPath = configModel.getLibraryPath(libraryId);
 
@@ -36,13 +40,26 @@ export class ImportModel {
 
     // call import
     const importScript = path.join(phorgConfigDir, "utils/import.py");
-    const proc = spawn("python", [importScript, tmpfile.name, libraryPath], {
-      detached: true,
-    });
+    const proc = spawn(
+      "python",
+      [importScript, tmpfile.name, libraryPath, this.sockfile],
+      {
+        detached: true,
+      }
+    );
 
     proc.stdout.on("data", (data) => {
       console.log("stdout:", data.toString());
     });
+
+    proc.stderr.on("data", (data) => {
+      console.log("stderr:", data.toString());
+    });
+  }
+
+  newSocket(): Socket {
+    this.sockfile = `/tmp/phorg_import_${uuidv4()}.sock`;
+    return { path: this.sockfile };
   }
 
   private resolvePaths(pathsAndDirs: string[]) {

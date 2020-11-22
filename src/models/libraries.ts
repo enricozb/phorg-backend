@@ -44,7 +44,6 @@ export class LibraryModel {
 
   addMedia(libraryPath: string, importingMedia: LibraryMedia) {
     const library = this.getLibraryAtPath(libraryPath);
-    console.log("before insertion", library);
 
     library.media.items = { ...library.media.items, ...importingMedia.items };
 
@@ -67,5 +66,9 @@ export class LibraryModel {
 
   getThumbnailPath(libraryPath: string, mediaId: guid) {
     return path.join(libraryPath, "thumb", `${mediaId}.jpg`);
+  }
+
+  getMediaPath(libraryPath: string, library: Library, mediaId: guid) {
+    return path.join(libraryPath, "media", library.media.items[mediaId].filename);
   }
 }
